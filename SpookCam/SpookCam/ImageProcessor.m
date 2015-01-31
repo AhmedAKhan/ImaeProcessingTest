@@ -84,6 +84,7 @@
                                                       bitsPerComponent, ghostBytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
     CGContextDrawImage(ghostContext, CGRectMake(0, 0, ghostSize.width, ghostSize.height), ghostCGImage);
     
+    /*
     NSUInteger offsetPixelCountForInput = ghostOrigin.y * inputWidth + ghostOrigin.x;
     for (NSUInteger j = 0; j < ghostSize.height; j++) {
         for (NSUInteger i = 0; i < ghostSize.width; i++) {
@@ -103,31 +104,24 @@
             newR = MAX(0,MIN(255, newR));
             newG = MAX(0,MIN(255, newG));
             newB = MAX(0,MIN(255, newB));
-            
 
             *inputPixel = RGBAMake(newR, newG, newB, A(inputColor));
             
         }
-        
-        
-        for (NSUInteger j = 0; j < inputHeight; j++) {
-            for (NSUInteger i = 0; i < inputWidth; i++) {
-                UInt32 * currentPixel = inputPixels + (j*inputWidth) + i;
-                UInt32 color = *currentPixel;
-                
-                UInt32 newR = R(color);
-                UInt32 newG = G(color);
-                UInt32 newB = B(color); 
-                
-                UInt32 averagePixelColor = (newR + newG + newB)/3;
-                *currentPixel = RGBAMake(averagePixelColor, averagePixelColor, averagePixelColor, A(color));
-            }
+    }*/
+    
+    for (NSUInteger j = 0; j < inputHeight; j++) {
+        for (NSUInteger i = 0; i < inputWidth; i++) {
+            UInt32 * currentPixel = inputPixels + (j*inputWidth) + i;
+            UInt32 color = *currentPixel;
+            
+            UInt32 blackOrWhitePixel = ((R(color) + G(color) + B(color)) < 383)? 0:255;
+            *currentPixel = RGBAMake(blackOrWhitePixel, blackOrWhitePixel, blackOrWhitePixel, A(color));
         }
     }
     
     CGImageRef newCGImage = CGBitmapContextCreateImage(context);
     UIImage * processedImage = [UIImage imageWithCGImage:newCGImage];
-    
     
     // Cleanup!
     CGColorSpaceRelease(colorSpace);

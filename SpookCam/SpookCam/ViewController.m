@@ -27,7 +27,7 @@
 {
   [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-  //[self setupWithImage:[UIImage imageNamed:@"ghost_tiny.png"]];
+  [self setupWithImage:[UIImage imageNamed:@"sampleText.png"]];
 }
 
 #pragma mark - Custom Accessors
