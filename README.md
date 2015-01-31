@@ -1,0 +1,1 @@
+I am currently trying to make an application that takes text and converts it into text
